@@ -1,0 +1,23 @@
+#include "stdafx.h"
+#include <stdio.h>
+#include <math.h>
+#include <conio.h>
+#include <iostream>
+
+using namespace std;
+
+void main(){
+int n,s=0,cont=2;
+
+	cout<<"ingrese valor"<<endl;
+	cin>> n;
+
+	while(cont<=n){
+		 s=s+cont;
+		 cont=cont+2;
+	}
+
+	cout<< "la suma es : " << s;
+
+	getch();
+}
