@@ -1,0 +1,29 @@
+#include "stdafx.h"
+#include <iostream>
+#include <conio.h>
+#include <math.h>
+using namespace std;
+
+float volumen(float radio, float altura);
+
+void main(){
+
+	float radio, altura, vol, pi=3.141516;
+
+	cout<<"Ingrese el radio:"<<endl;
+	cin>> radio;
+	cout<<"Ingrese la altura:"<<endl;
+	cin>> altura;
+
+	vol= volumen(radio, altura);
+	cout<<"El volumen es :" << vol;
+	getch();
+
+}
+
+float volumen(float radio, float altura){
+
+	float v, pi=3.141516;
+	v=pi*radio*radio*altura;
+	return v;
+}
