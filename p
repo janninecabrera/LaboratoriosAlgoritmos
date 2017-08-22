@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include <iostream>
-#include <math.h>
+#include "math.h"
 #include "conio.h"
 
 using namespace std;
@@ -23,7 +23,8 @@ void main(){
 
 float solucion(int n){
 	
-	int i=0, s=0, d, x;
+	int i=0, s=0, x;
+	float d;
 
 	while (n>0){
 		
@@ -32,5 +33,5 @@ float solucion(int n){
 		n=n/10;
 		i++;
 	}
-
+	return s;
 }
