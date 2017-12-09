@@ -1,0 +1,1397 @@
+// Empleo.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include <string>
+#include <iostream>
+#include <conio.h>
+
+using namespace std;
+
+struct Usuario{
+	int id_Usuario;
+	string Login;
+	string Password;
+	string Estado;
+};
+
+struct Nineras
+{
+	int Id_Nineras;
+	string Nombre;
+	string Apellido;
+	string Carnet;
+	string Num_Telf;
+	string Estado;
+};
+
+struct Cliente
+{
+	int Id_Cliente;
+	string Nombre;
+	string Apellido;
+	string Direccion;
+	string Num_Telf;
+	string Estado;
+};
+
+struct Guarderia{
+	int id_Guarderia;
+	string Nombre;
+	string Direccion;
+	string Telefono;
+	string Estado;
+};
+
+struct BolsaEmpleo{
+	int Id_Bolsa;
+	int Id_Cliente;
+	string Nombre;
+	string Requisito1;
+	string Requisito2;
+	string Requisito3;
+	string Estado;
+};
+
+//Funciones para crear archivos
+void crear_Archivo_Usuarios();
+void crear_Archivo_Nineras();
+void crear_Archivo_Guarderias();
+void crear_Archivo_Clientes();
+void crear_Archivo_Empleos();
+
+//Funciones para administrar los diferentes menus
+void menu_Nineras();
+void menu_Guarderias();
+void menu_Clientes();
+void menu_Empleos();
+
+//Funciones para Adminisistrar Usuarios
+void menu_Cliente();
+void menu_Usuarios();
+void cargar_Usuario_Inicial();
+
+//Fuciones para manipular la estructura Usuarios
+void alta_Usuarios();
+void baja_Usuarios();
+void modificacion_Usuarios();
+void consulta_Usuarios();
+
+void iniciar_Sesion(string usuario,string password);
+
+//Fuciones para manipular la estructura Nineras
+void alta_Nineras();
+void baja_Nineras();
+void modificacion_Nineras();
+void consulta_Nineras();
+
+//Fuciones para manipular la estructura Clientes
+void alta_Clientes();
+void baja_Clientes();
+void modificacion_Clientes();
+void consulta_Clientes();
+
+//Fuciones para manipular la estructura Guarderias
+void alta_Guarderias();
+void baja_Guarderias();
+void modificacion_Guarderias();
+void consulta_Guarderias();
+
+//Fuciones para manipular la estructura Empleos
+void alta_Empleos();
+void baja_Empleos();
+void modificacion_Empleos();
+void consulta_Empleos();
+
+void reporte_Empleos();
+void reporte_Guarderias();
+void main()
+{
+	int op=0;
+	string usuario, password;
+	do{
+		system("cls");
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<"----                   Bolsa de Empleos                  ----"<<endl;
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<" 1 .- Crear Archivos."<<endl;
+		cout<<" 2 .- Crear Usuario."<<endl;
+		cout<<" 3 .- Iniciar Sesion."<<endl;
+		cout<<" 0 .- Salir."<<endl;
+		cout<<endl;
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<endl;
+		cout<<"Elija una opcion : ";
+		cin>>op;
+		switch(op){
+		case 1:
+			crear_Archivo_Usuarios();
+			cargar_Usuario_Inicial();
+			crear_Archivo_Nineras();
+			crear_Archivo_Guarderias();
+			crear_Archivo_Clientes();
+			crear_Archivo_Empleos();
+			break;
+		case 2:
+			alta_Usuarios();
+			break;
+		case 3:
+			cout<<"Ingrese usuario :"<<endl;
+			cin>>usuario;
+			cout<<"Ingrese password :"<<endl;
+			cin>>password;
+			if((usuario == "Admin") && (password == "1234")){
+				menu_Cliente();
+			}else{
+				iniciar_Sesion(usuario,password);
+			}
+			break;
+		case 0:
+			cout<<"Ud. esta saliendo del programa"<<endl;
+			system("PAUSE");
+			break;
+		default:
+			cout<<"Opcion no valida"<<endl;
+			break;
+		}
+	}while(op != 0);
+}
+
+void menu_Cliente(){
+	int op=0;
+	do{
+		system("cls");
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<"----                   Bolsa de Empleos                  ----"<<endl;
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<endl;
+		cout<<" 1 .- Consultar Nineras."<<endl;	
+		cout<<" 2 .- Consultar Guarderias."<<endl;
+		cout<<" 3 .- Bolsa de Trabajo."<<endl;
+		cout<<" 4 .- Reporte de Empleos."<<endl;
+		cout<<" 5 .- Reporte de Guarderias."<<endl;
+		cout<<" 0 .- Volver."<<endl;
+		cout<<endl;
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<endl;
+		cout<<"Elija una opcion : ";
+		cin>>op;
+		switch(op){
+		case 1:
+			consulta_Nineras();
+			break;
+		case 2:
+			consulta_Guarderias();
+			break;
+		case 3:
+			menu_Empleos();
+			break;
+		case 4:
+			reporte_Empleos();
+				break;
+		case 5:
+			reporte_Guarderias();
+			break;
+		default:
+			cout<<"Opcion no valida"<<endl;
+			break;
+		}
+	}while(op != 0);
+}
+
+void menu_Usuarios(){
+	int op=0;
+	do{
+		system("cls");
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<"----                   Bolsa de Empleos                  ----"<<endl;
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<endl;
+		cout<<" 1 .- Nineras."<<endl;
+		cout<<" 2 .- Guarderias."<<endl;
+		cout<<" 3 .- Consultar Bolsa de Trabajo."<<endl;
+		cout<<" 0 .- Volver."<<endl;
+		cout<<endl;
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<endl;
+		cout<<"Elija una opcion : ";
+		cin>>op;
+		switch(op){
+		case 1:
+			menu_Nineras();
+			break;
+		case 2:
+			menu_Guarderias();
+			break;
+		case 3:
+			consulta_Empleos();
+			break;
+		default:
+			cout<<"Opcion no valida"<<endl;
+			break;
+		}
+	}while(op != 0);
+}
+
+void iniciar_Sesion(string usuario, string password){
+	FILE *ptr;
+	Usuario reg;
+	ptr = fopen("Usuarios.dat","rb");
+
+	fread(&reg, sizeof(reg), 1, ptr);
+	while (!feof(ptr)) // Ciclo mientras no se encuentre el final del archivo
+	{
+		if((usuario == reg.Login ) && (password == reg.Password)){
+			cout<<"-------------------------------------------------------------"<<endl;
+			cout<<"--------             Bolsa de Empleos                --------"<<endl;
+			cout<<"-------------------------------------------------------------"<<endl;
+			cout<<"Bienvenido(a) "<< reg.Login <<endl;
+			fread(&reg, sizeof(reg), 1, ptr);
+			menu_Usuarios();
+		}else{
+			cout<<"Usuario no valido!!"<<endl;
+			break;
+		}
+	}
+	fclose(ptr);
+	system("PAUSE");
+}
+
+// Creacion de Archivos
+void crear_Archivo_Usuarios(){
+	FILE *ptr;
+	ptr = fopen("Usuarios.dat", "wb");
+	if (ptr != NULL)
+	{
+		cout<<"El Archivo Usuarios.dat ha sido creado Exitosamente.!"<<endl;
+	}
+	else
+	{
+		cout<<"Error, El Archivo no fue creado"<<endl;
+	}
+	fclose(ptr);
+	system("PAUSE");
+}
+
+void cargar_Usuario_Inicial(){
+	long dir;
+	int id;
+	//Datos de Usuario genérico
+	FILE *ptr;
+	Usuario usu;
+	ptr = fopen("Usuarios.dat","wb");
+	if(ptr==NULL){
+		cout<<"El archivo NO Existe "<<endl;
+		getch();
+	}else{
+		id=1;
+		dir = id * sizeof(usu); // Calculo de la dir. fisica
+		fseek(ptr, dir, SEEK_SET); //Posicionar el apuntador del archivo
+		fread(&usu,sizeof(usu),1,ptr);
+		if(usu.id_Usuario != id){
+			usu.id_Usuario=id;
+			usu.Login="jannine";
+			usu.Password="123456";
+			usu.Estado ="A";
+			//fseek(ptr, ftell(ptr) - sizeof(usu), SEEK_SET); //Posicionar el apuntador del archivo
+			fseek(ptr, dir, SEEK_SET); //Posicionar el apuntador del archivo
+			fwrite(&usu,sizeof(usu),1,ptr);
+		}
+	}
+	fclose(ptr);
+}
+
+void crear_Archivo_Nineras(){
+	FILE *ptr;
+	ptr = fopen("Nineras.dat", "wb");
+	if (ptr != NULL)
+	{
+		cout<<"El Archivo Nineras.dat ha sido creado Exitosamente.!"<<endl;
+	}
+	else
+	{
+		cout<<"Error, El Archivo no fue creado"<<endl;
+	}
+	fclose(ptr);
+	system("PAUSE");
+}
+
+void crear_Archivo_Guarderias(){
+	FILE *ptr;
+	ptr = fopen("Guarderias.dat", "wb");
+	if (ptr != NULL)
+	{
+		cout<<"El Archivo Guarderias.dat ha sido creado Exitosamente.!"<<endl;
+	}
+	else
+	{
+		cout<<"Error, El Archivo no fue creado"<<endl;
+	}
+	fclose(ptr);
+	system("PAUSE");
+}
+
+void crear_Archivo_Clientes(){
+	FILE *ptr;
+	ptr = fopen("Clientes.dat", "wb");
+	if (ptr != NULL)
+	{
+		cout<<"El Archivo Clientes.dat ha sido creado Exitosamente.!"<<endl;
+	}
+	else
+	{
+		cout<<"Error, El Archivo no fue creado"<<endl;
+	}
+	fclose(ptr);
+	system("PAUSE");
+}
+
+void crear_Archivo_Empleos(){
+	FILE *ptr;
+	ptr = fopen("Empleos.dat", "wb");
+	if (ptr != NULL)
+	{
+		cout<<"El Archivo Empleos.dat ha sido creado Exitosamente.!"<<endl;
+	}
+	else
+	{
+		cout<<"Error, El Archivo no fue creado"<<endl;
+	}
+	fclose(ptr);
+	system("PAUSE");
+}
+
+void menu_Nineras(){
+	int op=0;
+	do{
+		system("cls");
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<"----                 Menu Nineras                        ----"<<endl;
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<" 1 .- Altas."<<endl;
+		cout<<" 2 .- Bajas."<<endl;
+		cout<<" 3 .- Modificacion."<<endl;
+		cout<<" 4 .- Consultas."<<endl;
+		cout<<" 0 .- Volver."<<endl;
+		cout<<endl;
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<endl;
+		cout<<"Elija una opcion : ";
+		cin>>op;
+		switch(op){
+		case 1:
+			alta_Nineras();
+			break;
+		case 2:
+			baja_Nineras();
+			break;
+		case 3:
+			modificacion_Nineras();
+			break;
+		case 4:
+			consulta_Nineras();
+			break;
+		default:
+			cout<<"Opcion no valida"<<endl;
+			break;
+		}
+	}while(op != 0);
+}
+
+void menu_Guarderias(){
+	int op=0;
+	do{
+		system("cls");
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<"----                 Menu Guarderias                     ----"<<endl;
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<" 1 .- Altas."<<endl;
+		cout<<" 2 .- Bajas."<<endl;
+		cout<<" 3 .- Modificacion."<<endl;
+		cout<<" 4 .- Consultas."<<endl;
+		cout<<" 0 .- Volver."<<endl;
+		cout<<endl;
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<endl;
+		cout<<"Elija una opcion : ";
+		cin>>op;
+		switch(op){
+		case 1:
+			alta_Guarderias();
+			break;
+		case 2:
+			baja_Guarderias();
+			break;
+		case 3:
+			modificacion_Guarderias();
+			break;
+		case 4:
+			consulta_Guarderias();
+			break;
+		default:
+			cout<<"Opcion no valida"<<endl;
+			break;
+		}
+	}while(op != 0);
+}
+
+void menu_Clientes(){
+	int op=0;
+	do{
+		system("cls");
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<"----                 Menu Clientes                        ----"<<endl;
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<" 1 .- Altas."<<endl;
+		cout<<" 2 .- Bajas."<<endl;
+		cout<<" 3 .- Modificacion."<<endl;
+		cout<<" 4 .- Consultas."<<endl;
+		cout<<" 0 .- Volver."<<endl;
+		cout<<endl;
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<endl;
+		cout<<"Elija una opcion : ";
+		cin>>op;
+		switch(op){
+		case 1:
+			alta_Clientes();
+			break;
+		case 2:
+			baja_Clientes();
+			break;
+		case 3:
+			modificacion_Clientes();
+			break;
+		case 4:
+			consulta_Clientes();
+			break;
+		default:
+			cout<<"Opcion no valida"<<endl;
+			break;
+		}
+	}while(op != 0);
+}
+
+void menu_Empleos(){
+	int op=0;
+	do{
+		system("cls");
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<"----                 Menu Empleos                        ----"<<endl;
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<" 1 .- Altas."<<endl;
+		cout<<" 2 .- Bajas."<<endl;
+		cout<<" 3 .- Modificacion."<<endl;
+		cout<<" 4 .- Consultas."<<endl;
+		cout<<" 0 .- Volver."<<endl;
+		cout<<endl;
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<endl;
+		cout<<"Elija una opcion : ";
+		cin>>op;
+		switch(op){
+		case 1:
+			alta_Empleos();
+			break;
+		case 2:
+			baja_Empleos();
+			break;
+		case 3:
+			modificacion_Empleos();
+			break;
+		case 4:
+			consulta_Empleos();
+			break;
+		default:
+			cout<<"Opcion no valida"<<endl;
+			break;
+		}
+	}while(op != 0);
+}
+
+//Funciones para manejar la estructura de Nineras 
+void alta_Nineras(){
+	int id;
+	long dir;
+	FILE *ptr;
+	Nineras reg;
+
+	cout << "\n\rALTA DE REGISTROS DE NINERAS"<<endl;
+	cout << "-----------------------------------------------------------";
+	ptr = fopen("Nineras.dat","rb+");
+	if(ptr == NULL){
+		cout << "\n\n\n\rNo existe el archivo !!!";
+		system("PAUSE");
+	}
+	
+	cout << "\n\n\rId de Ninera : "; 
+	cin >> id;
+	dir = id * sizeof(reg); // Calculo de la dir. fisica
+	fseek(ptr, dir, SEEK_SET); //Posicionar el apuntador del archivo
+	fread(&reg, sizeof(reg), 1, ptr);
+	// Lee el "Reg", de tamano=sizeof(Reg) del archivo "Nineras"
+	if(reg.Id_Nineras != id){
+		cout << "Ingrese Nombre : ";
+		cin>>reg.Nombre;
+		
+		cout << "Ingrese Apellido : ";
+		cin>>reg.Apellido;
+		
+		cout << "Ingrese Carnet : ";
+		cin>>reg.Carnet;
+
+		cout << "Ingrese Num Telef : ";
+		cin>>reg.Num_Telf;
+		
+		reg.Estado = "S";
+		reg.Id_Nineras = id;
+
+		fseek(ptr, dir, SEEK_SET); //Posicionar el apuntador del archivo
+		fwrite(&reg, sizeof(reg), 1, ptr); // Grabar el Registro completo
+		cout << "\n\n\n\rRegistro guardado!";
+		system("PAUSE");
+	} else {
+		cout << "\n\n\n\rEl Id Ninera ya existe !!!"<<endl;
+		system("PAUSE");
+	}
+	fclose(ptr);
+}
+
+void baja_Nineras(){
+	int id; // Variable local para el numero de cliente que desea eliminar
+	long dir;
+	char op;
+
+	FILE *ptr;
+	Nineras reg;
+	
+	cout << "\n\rBAJA LOGICA DE REGISTROS DE NINERAS";
+	ptr = fopen("Nineras.dat","rb");
+	// en modo de lectura/escritura
+	if (ptr == NULL)  // Valida la existencia del archivo
+	{
+		cout << "\n\n\n\rNo existe el archivo !!!"<<endl;
+		system("PAUSE");
+	}
+
+	cout << "\n\n\n\rId de Ninera: "; 
+	cin >> id;
+
+	dir = id * sizeof(reg); // Calculo de la dir. fisica
+	fseek(ptr, dir, SEEK_SET); //Posicionar el apuntador del archivo
+	fread(&reg, sizeof(reg), 1, ptr);
+	// Lee el "Registro", de tamano=sizeof(Registro) del archivo "alias"
+	if (reg.Id_Nineras == id)
+	{
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<"--------        Baja Logica de Nineras               --------"<<endl;
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<endl;
+		cout<<"Codigo \t"<<"Nombre \t"<<"Apellido \t"<<"Direccion \t"<<"Telefono "<<endl;
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<< reg.Id_Nineras <<"\t"<< reg.Nombre <<"\t"<< reg.Apellido <<"\t"<< reg.Carnet <<"\t"<< reg.Num_Telf;
+		do
+		{
+			cout << "\n\rEsta seguro que desea eliminar este registro? [S/N] ---> ";
+			op = toupper(_getche());
+		} while (op != 'S' && op != 'N');
+		if (op == 'S')
+		{
+			reg.Estado = "N";
+			fseek(ptr, dir, SEEK_SET); //Posicionar el apuntador del archivo
+			fwrite(&reg, sizeof(reg), 1, ptr);  // Graba el registro con los nuevos campos
+			cout << "\n\n\n\rRegistro eliminado logicamente !!!"<<endl;
+			system("PAUSE");
+		}
+		else
+		{
+			cout << "\n\n\n\rRegistro NO eliminado !!!"<<endl;
+			system("PAUSE");
+		}
+	}
+	fclose(ptr);   // Cierra el archivo
+}
+
+void modificacion_Nineras(){
+	FILE *ptr;
+	Nineras reg;
+	int id, pos;
+	cout << "Ingrese el id de Ninera que desea modificar: ";
+	cin >> id;
+	ptr = fopen("Nineras.dat","rb+");
+	if(ptr != NULL)
+	{
+		fread(&reg,sizeof(reg),1,ptr);
+//		while(!feof(ptr))
+	//	{
+			if(reg.Id_Nineras == id)
+			{
+				reg.Id_Nineras = id;
+				cout << "Ingrese el Nombre : ";
+				cin >> reg.Nombre;
+
+				cout << "Ingrese el Apellido : ";
+				cin >> reg.Apellido;
+
+				cout << endl << "Ingrese Carnet : "<< endl ;
+				cin >> reg.Carnet;
+
+				cout << "Ingrese el Telefono : ";
+				cin >> reg.Num_Telf;
+
+				reg.Estado = "S";
+				fseek(ptr,ftell(ptr)-sizeof(reg),SEEK_SET);
+				fwrite(&reg,sizeof(reg),1,ptr);
+				cout<<"Registro modificado..."<<endl;
+
+			}
+			fread(&reg,sizeof(reg),1,ptr);
+		}
+		fclose(ptr);
+		system("PAUSE");
+	//}
+}
+
+void consulta_Nineras(){
+	FILE *ptr;
+	Nineras reg;
+	ptr = fopen("Nineras.dat","rb");
+	if(ptr == NULL){
+		cout << "\n\n\n\rNo existe el archivo !!!"<<endl;
+		system("PAUSE");
+	}
+	cout<<"-------------------------------------------------------------"<<endl;
+	cout<<"--------         Consulta de Nineras                 --------"<<endl;
+	cout<<"-------------------------------------------------------------"<<endl;
+	cout<<endl;
+	cout<<"Codigo \t"<<"Nombre \t"<<"Apellido \t"<<"Carnet \t"<<"Telefono "<<endl;
+	cout<<"-------------------------------------------------------------"<<endl;
+	fread(&reg, sizeof(reg), 1, ptr);
+	while (!feof(ptr)) 
+	{
+		if((reg.Estado == "S") && (reg.Estado != "")){
+			cout<<reg.Id_Nineras<<"\t"<< reg.Nombre <<"\t"<<reg.Apellido<<"\t"<<reg.Carnet<<"\t"<<reg.Num_Telf<<endl;
+		}
+		fread(&reg, sizeof(reg), 1, ptr);	
+	}
+	cout<<"-------------------------------------------------------------"<<endl;
+	fclose(ptr);
+	cout << "\n\rFin del listado !!!"<<endl;
+	system("PAUSE");
+}
+
+//Fuciones para manipular la estructura Clientes
+void alta_Clientes(){
+	int id;
+	long dir;
+	FILE *ptr;
+	Cliente reg;
+
+	cout << "\n\rALTA DE REGISTROS DE NINERAS"<<endl;
+	cout << "-----------------------------------------------------------";
+	ptr = fopen("Clientes.dat","rb+");
+	if(ptr == NULL){
+		cout << "\n\n\n\rNo existe el archivo !!!";
+		system("PAUSE");
+	}
+	
+	cout << "\n\n\rId de Cliente : "; 
+	cin >> id;
+	dir = id * sizeof(reg); // Calculo de la dir. fisica
+	fseek(ptr, dir, SEEK_SET); //Posicionar el apuntador del archivo
+	fread(&reg, sizeof(reg), 1, ptr);
+	// Lee el "Reg", de tamano=sizeof(Reg) del archivo "Nineras"
+	if(reg.Id_Cliente != id){
+		cout << "Ingrese Nombre : ";
+		cin>>reg.Nombre;
+		
+		cout << "Ingrese Apellido : ";
+		cin>>reg.Apellido;
+
+		cout << "Ingrese la Direccion :";
+		cin>>reg.Direccion;
+
+		cout << "Ingrese Num Telef : ";
+		cin>>reg.Num_Telf;
+		
+		reg.Estado = "S";
+		reg.Id_Cliente = id;
+
+		fseek(ptr, dir, SEEK_SET); //Posicionar el apuntador del archivo
+		fwrite(&reg, sizeof(reg), 1, ptr); // Grabar el Registro completo
+		cout << "\n\n\n\rRegistro guardado!";
+		system("PAUSE");
+	} else {
+		cout << "\n\n\n\rEl Id Cliente ya existe !!!"<<endl;
+		system("PAUSE");
+	}
+	fclose(ptr);
+}
+
+void baja_Clientes(){
+	int id; // Variable local para el numero de cliente que desea eliminar
+	long dir;
+	char op;
+
+	FILE *ptr;
+	Cliente reg;
+	
+	cout << "\n\rBAJA LOGICA DE REGISTROS DE CLIENTES";
+	ptr = fopen("Clientes.dat","rb");
+	// en modo de lectura/escritura
+	if (ptr == NULL)  // Valida la existencia del archivo
+	{
+		cout << "\n\n\n\rNo existe el archivo !!!"<<endl;
+		system("PAUSE");
+	}
+
+	cout << "\n\n\n\rId de Cliente : "; 
+	cin >> id;
+
+	dir = id * sizeof(reg); // Calculo de la dir. fisica
+	fseek(ptr, dir, SEEK_SET); //Posicionar el apuntador del archivo
+	fread(&reg, sizeof(reg), 1, ptr);
+	// Lee el "Registro", de tamano=sizeof(Registro) del archivo "alias"
+	if (reg.Id_Cliente == id)
+	{
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<"--------        Baja Logica de Nineras               --------"<<endl;
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<endl;
+		cout<<"Codigo \t"<<"Nombre \t"<<"Apellido \t"<<"Direccion \t"<<"Telefono "<<endl;
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<< reg.Id_Cliente <<"\t"<< reg.Nombre <<"\t"<< reg.Apellido <<"\t"<< reg.Direccion<<"\t"<< reg.Num_Telf<<"\t"<< endl;
+		do
+		{
+			cout << "\n\rEsta seguro que desea eliminar este registro? [S/N] ---> ";
+			op = toupper(_getche());
+		} while (op != 'S' && op != 'N');
+		if (op == 'S')
+		{
+			reg.Estado = "N";
+			fseek(ptr, dir, SEEK_SET); //Posicionar el apuntador del archivo
+			fwrite(&reg, sizeof(reg), 1, ptr);  // Graba el registro con los nuevos campos
+			cout << "\n\n\n\rRegistro eliminado logicamente !!!"<<endl;
+			system("PAUSE");
+		}
+		else
+		{
+			cout << "\n\n\n\rRegistro NO eliminado !!!"<<endl;
+			system("PAUSE");
+		}
+	}
+	fclose(ptr);   // Cierra el archivo
+}
+
+void modificacion_Clientes(){
+	FILE *ptr;
+	Cliente reg;
+	int id, pos;
+	cout << "Ingrese el id de cliente que desea modificar: ";
+	cin >> id;
+	ptr = fopen("Clientes.dat","rb+");
+	if(ptr != NULL)
+	{
+		fread(&reg,sizeof(reg),1,ptr);
+		while(!feof(ptr))
+		{
+			if(reg.Id_Cliente == id)
+			{
+				reg.Id_Cliente = id;
+				cout << "Ingrese el Nombre : ";
+				cin >> reg.Nombre;
+				cout << "Ingrese el Apellido : ";
+				cin >> reg.Apellido;
+				cout << endl << "Ingrese Direccion : "<< endl ;
+				cin >> reg.Direccion;
+				cout << endl << "Ingrese Telefono : "<< endl ;
+				cin >> reg.Num_Telf;
+
+				reg.Estado = "S";
+				fseek(ptr,ftell(ptr)-sizeof(reg),SEEK_SET);
+				fwrite(&reg,sizeof(reg),1,ptr);
+				cout<<"Registro modificado..."<<endl;
+				system("PAUSE");
+			}
+			fread(&reg,sizeof(reg),1,ptr);
+		}
+	}
+	fclose(ptr);
+}
+
+void consulta_Clientes(){
+	FILE *ptr;
+	Cliente reg;
+	ptr = fopen("Clientes.dat","rb");
+	if(ptr == NULL){
+		cout << "\n\n\n\rNo existe el archivo !!!"<<endl;
+		system("PAUSE");
+	}
+	cout<<"-------------------------------------------------------------"<<endl;
+	cout<<"--------         Consulta de Nineras                 --------"<<endl;
+	cout<<"-------------------------------------------------------------"<<endl;
+	cout<<endl;
+	cout<<"Codigo \t"<<"Nombre \t"<<"Apellido \t"<<"Direccion \t"<<"Telefono "<<endl;
+	cout<<"-------------------------------------------------------------"<<endl;
+	fread(&reg, sizeof(reg), 1, ptr);
+	while (!feof(ptr)) 
+	{
+		if((reg.Estado == "S") && (reg.Estado != "")){
+			cout<<reg.Id_Cliente<<"\t"<< reg.Nombre <<"\t"<<reg.Apellido<<"\t"<<reg.Direccion<<"\t"<<reg.Num_Telf<<endl;
+		}
+		fread(&reg, sizeof(reg), 1, ptr);	
+	}
+	cout<<"-------------------------------------------------------------"<<endl;
+	fclose(ptr);
+	cout << "\n\rFin del listado !!!"<<endl;
+	system("PAUSE");
+}
+
+//Fuciones para manipular la estructura Guarderias
+void alta_Guarderias(){
+	int id;
+	long dir;
+	FILE *ptr;
+	Guarderia reg;
+
+	cout << "\n\rALTA DE REGISTROS DE NINERAS"<<endl;
+	cout << "-----------------------------------------------------------";
+	ptr = fopen("Guarderias.dat","rb+");
+	if(ptr == NULL){
+		cout << "\n\n\n\rNo existe el archivo !!!";
+		system("PAUSE");
+	}
+	
+	cout << "\n\n\rId de Guarderia : "; 
+	cin >> id;
+	dir = id * sizeof(reg); // Calculo de la dir. fisica
+	fseek(ptr, dir, SEEK_SET); //Posicionar el apuntador del archivo
+	fread(&reg, sizeof(reg), 1, ptr);
+	// Lee el "Reg", de tamano=sizeof(Reg) del archivo "Nineras"
+	if(reg.id_Guarderia != id){
+		cout << "Ingrese Nombre : ";
+		cin>>reg.Nombre;
+		
+		cout << "Ingrese Direccion : ";
+		cin>>reg.Direccion;
+		
+		cout << "Ingrese Telefono : ";
+		cin>>reg.Telefono;
+
+		reg.Estado = "S";
+		reg.id_Guarderia = id;
+
+		fseek(ptr, dir, SEEK_SET); //Posicionar el apuntador del archivo
+		fwrite(&reg, sizeof(reg), 1, ptr); // Grabar el Registro completo
+		
+		cout << "\n\n\n\rRegistro guardado!";
+		system("PAUSE");
+	} else {
+		cout << "\n\n\n\rEl Id Guarderia ya existe !!!";
+		cout << "\n\r<<< Oprima cualquier tecla para continuar >>>";
+		system("PAUSE");
+	}
+	fclose(ptr);
+}
+
+void baja_Guarderias(){
+	int id; // Variable local para el numero de cliente que desea eliminar
+	long dir;
+	char op;
+
+	FILE *ptr;
+	Guarderia reg;
+	
+	cout << "\n\rBAJA LOGICA DE REGISTROS DE GUARDERIAS";
+	ptr = fopen("Guarderias.dat","rb");
+	// en modo de lectura/escritura
+	if (ptr == NULL)  // Valida la existencia del archivo
+	{
+		cout << "\n\n\n\rNo existe el archivo !!!"<<endl;
+		system("PAUSE");
+	}
+
+	cout << "\n\n\n\rId de Guarderia : "; 
+	cin >> id;
+
+	dir = id * sizeof(reg); // Calculo de la dir. fisica
+	fseek(ptr, dir, SEEK_SET); //Posicionar el apuntador del archivo
+	fread(&reg, sizeof(reg), 1, ptr);
+	// Lee el "Registro", de tamano=sizeof(Registro) del archivo "alias"
+	if (reg.id_Guarderia == id)
+	{
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<"--------        Baja Logica de Nineras               --------"<<endl;
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<endl;
+		cout<<"Codigo \t"<<"Nombre \t"<<"Direccion \t"<<"Telefono "<<endl;
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<< reg.id_Guarderia <<"\t"<< reg.Nombre <<"\t"<< reg.Direccion <<"\t"<< reg.Telefono << endl;
+		do
+		{
+			cout << "\n\rEsta seguro que desea eliminar este registro? [S/N] ---> ";
+			op = toupper(_getche());
+		} while (op != 'S' && op != 'N');
+		if (op == 'S')
+		{
+			reg.Estado = "N";
+			fseek(ptr, dir, SEEK_SET); //Posicionar el apuntador del archivo
+			fwrite(&reg, sizeof(reg), 1, ptr);  // Graba el registro con los nuevos campos
+			cout << "\n\n\n\rRegistro eliminado logicamente !!!"<<endl;
+			system("PAUSE");
+		}
+		else
+		{
+			cout << "\n\n\n\rRegistro NO eliminado !!!"<<endl;
+			system("PAUSE");
+		}
+	}
+	fclose(ptr);   // Cierra el archivo		
+}
+
+void modificacion_Guarderias(){
+	FILE *ptr;
+	Guarderia reg;
+	int id, pos;
+	cout << "Ingrese el id de guarderia que desea modificar: ";
+	cin >> id;
+	ptr = fopen("Guarderias.dat","rb+");
+	if(ptr != NULL)
+	{
+		fread(&reg,sizeof(reg),1,ptr);
+		while(!feof(ptr))
+		{
+			if(reg.id_Guarderia == id)
+			{
+				reg.id_Guarderia = id;
+				cout << "Ingrese el Nombre : ";
+				cin >> reg.Nombre;
+				cout << endl << "Ingrese Direccion : "<< endl ;
+				cin >> reg.Direccion;
+				cout << endl << "Ingrese Telefono : "<< endl ;
+				cin >> reg.Telefono;
+
+				reg.Estado = "S";
+				fseek(ptr,ftell(ptr)-sizeof(reg),SEEK_SET);
+				fwrite(&reg,sizeof(reg),1,ptr);
+				cout<<"Registro modificado..."<<endl;
+			}
+			fread(&reg,sizeof(reg),1,ptr);
+		}
+	}
+	fclose(ptr);
+}
+
+void consulta_Guarderias(){
+	FILE *ptr;
+	Guarderia reg;
+	ptr = fopen("Guarderias.dat","rb");
+	if(ptr == NULL){
+		cout << "\n\n\n\rNo existe el archivo !!!"<<endl;
+		system("PAUSE");
+	}
+	cout<<"-------------------------------------------------------------"<<endl;
+	cout<<"--------         Consulta de Empleos                 --------"<<endl;
+	cout<<"-------------------------------------------------------------"<<endl;
+	cout<<endl;
+	cout<<"Codigo \t"<<"Nombre \t"<<"Direccion \t"<<"Telefono "<<endl;
+	cout<<"-------------------------------------------------------------"<<endl;
+	fread(&reg, sizeof(reg), 1, ptr);
+	while (!feof(ptr)) 
+	{
+		if((reg.Estado == "S") && (reg.Estado != "")){
+			cout<< reg.id_Guarderia <<"\t"<< reg.Nombre <<"\t"<< reg.Direccion <<"\t"<< reg.Telefono <<endl;
+		}
+		fread(&reg, sizeof(reg), 1, ptr);	
+	}
+	cout<<"-------------------------------------------------------------"<<endl;
+	fclose(ptr);
+	cout << "\n\rFin del listado !!!"<<endl;
+	system("PAUSE");
+}
+
+//Fuciones para manipular la estructura Empleos
+void alta_Empleos(){
+	int id;
+	long dir;
+	FILE *ptr;
+	BolsaEmpleo reg;
+
+	cout << "\n\rALTA DE REGISTROS DE EMPLEOS"<<endl;
+	cout << "-----------------------------------------------------------";
+	ptr = fopen("Empleos.dat","rb+");
+	if(ptr == NULL){
+		cout << "\n\n\n\rNo existe el archivo !!!";
+		system("PAUSE");
+	}
+	
+	cout << "\n\n\rId de Empleo : "; 
+	cin >> id;
+	dir = id * sizeof(reg); // Calculo de la dir. fisica
+	fseek(ptr, dir, SEEK_SET); //Posicionar el apuntador del archivo
+	fread(&reg, sizeof(reg), 1, ptr);
+	// Lee el "Reg", de tamano=sizeof(Reg) del archivo "Nineras"
+	if(reg.Id_Bolsa != id){
+		cout << "Ingrese Codigo de Cliente : ";
+		cin>>reg.Id_Cliente;
+
+		cout << "Ingrese Titulo : ";
+		cin>>reg.Nombre;
+				
+		cout << "Ingrese Requisito 1 : ";
+		cin>>reg.Requisito1;
+
+		cout << "Ingrese Requisito 2 : ";
+		cin>>reg.Requisito2;
+
+		cout << "Ingrese Requisito 3 : ";
+		cin>>reg.Requisito3;
+		
+		reg.Estado = "S";
+		reg.Id_Bolsa = id;
+
+		fseek(ptr, dir, SEEK_SET); //Posicionar el apuntador del archivo
+		fwrite(&reg, sizeof(reg), 1, ptr); // Grabar el Registro completo
+
+		cout << "\n\n\n\rRegistro guardado!";
+		system("PAUSE");
+	} else {
+		cout << "\n\n\n\rEl Id Bolsa ya existe !!!"<<endl;
+		system("PAUSE");
+	}
+	fclose(ptr);
+}
+
+void baja_Empleos(){
+	int id; // Variable local para el numero de cliente que desea eliminar
+	long dir;
+	char op;
+
+	FILE *ptr;
+	BolsaEmpleo reg;
+	
+	cout << "\n\rBAJA LOGICA DE REGISTROS DE NINERAS";
+	ptr = fopen("Empleos.dat","rb");
+	// en modo de lectura/escritura
+	if (ptr == NULL)  // Valida la existencia del archivo
+	{
+		cout << "\n\n\n\rNo existe el archivo !!!"<<endl;
+		system("PAUSE");
+	}
+
+	cout << "\n\n\n\rId de Empleo : "; 
+	cin >> id;
+
+	dir = id * sizeof(reg); // Calculo de la dir. fisica
+	fseek(ptr, dir, SEEK_SET); //Posicionar el apuntador del archivo
+	fread(&reg, sizeof(reg), 1, ptr);
+	// Lee el "Registro", de tamano=sizeof(Registro) del archivo "alias"
+	if (reg.Id_Bolsa == id)
+	{
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<"--------        Baja Logica de Nineras               --------"<<endl;
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<endl;
+		cout<<"Codigo \t"<<"Cod Cliente \t"<<"Titulo \t"<<"Requisitos "<<endl;
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<< reg.Id_Bolsa <<"\t"<< reg.Id_Cliente <<"\t"<< reg.Nombre <<"\t"<< reg.Requisito1 +" "+ reg.Requisito2 +" "+ reg.Requisito3<<endl;
+		do
+		{
+			cout << "\n\rEsta seguro que desea eliminar este registro? [S/N] ---> ";
+			op = toupper(_getche());
+		} while (op != 'S' && op != 'N');
+		if (op == 'S')
+		{
+			reg.Estado = "N";
+			fseek(ptr, dir, SEEK_SET); //Posicionar el apuntador del archivo
+			fwrite(&reg, sizeof(reg), 1, ptr);  // Graba el registro con los nuevos campos
+			cout << "\n\n\n\rRegistro eliminado logicamente !!!"<<endl;
+			system("PAUSE");
+		}
+		else
+		{
+			cout << "\n\n\n\rRegistro NO eliminado !!!";
+			system("PAUSE");
+		}
+	}
+	fclose(ptr);
+}
+
+
+void modificacion_Empleos(){
+	FILE *ptr;
+	BolsaEmpleo reg;
+	int id, pos;
+	cout << "Ingrese el id de Empleo que desea modificar: ";
+	cin >> id;
+	ptr = fopen("Empleos.dat","rb+");
+	if(ptr != NULL)
+	{
+		fread(&reg,sizeof(reg),1,ptr);
+		while(!feof(ptr))
+		{
+			if(reg.Id_Bolsa == id)
+			{
+				reg.Id_Bolsa = id;
+				cout << "Ingrese el Codigo de Cliente : ";
+				cin >> reg.Id_Cliente;
+				cout << endl << "Ingrese Titulo : "<< endl ;
+				cin >> reg.Nombre;
+				cout << endl << "Ingrese Requisitos : "<< endl ;
+				cin >> reg.Requisito1;
+				cin >> reg.Requisito2;
+				cin >> reg.Requisito3;
+
+				reg.Estado = "S";
+				fseek(ptr,ftell(ptr)-sizeof(reg),SEEK_SET);
+				fwrite(&reg,sizeof(reg),1,ptr);
+				cout<<"Registro modificado..."<<endl;
+				system("PAUSE");
+			}
+			fread(&reg,sizeof(reg),1,ptr);
+		}
+		fclose(ptr);
+	}
+}
+
+void consulta_Empleos(){
+	FILE *ptr;
+	BolsaEmpleo reg;
+	ptr = fopen("Empleos.dat","rb");
+	if(ptr == NULL){
+		cout << "\n\n\n\rNo existe el archivo !!!"<<endl;
+		system("PAUSE");
+	}
+	cout<<"-------------------------------------------------------------"<<endl;
+	cout<<"--------         Consulta de Empleos                 --------"<<endl;
+	cout<<"-------------------------------------------------------------"<<endl;
+	cout<<endl;
+	cout<<"Codigo \t"<<"Cod Cliente \t"<<"Titulo \t"<<"Requisitos "<<endl;
+	cout<<"-------------------------------------------------------------"<<endl;
+	fread(&reg, sizeof(reg), 1, ptr);
+	while (!feof(ptr)) 
+	{
+		if((reg.Estado == "S") && (reg.Estado != "")){
+			cout<< reg.Id_Bolsa <<"\t"<< reg.Id_Cliente <<"\t"<< reg.Nombre <<"\t"<< reg.Requisito1 +", "+ reg.Requisito2+", "+reg.Requisito3<<endl;
+		}
+		fread(&reg, sizeof(reg), 1, ptr);	
+	}
+	cout<<"-------------------------------------------------------------"<<endl;
+	fclose(ptr);
+	cout << "\n\rFin del listado !!!"<<endl;
+	system("PAUSE");
+}
+
+//Fuciones para manipular la estructura Usuarios
+void alta_Usuarios(){
+	int id;
+	long dir;
+	FILE *ptr;
+	Usuario reg;
+
+	cout << "\n\rALTA DE REGISTRO DE USUARIOS"<<endl;
+	cout << "-----------------------------------------------------------";
+	ptr = fopen("Usuarios.dat","rb+");
+	if(ptr == NULL){
+		cout << "\n\n\n\rNo existe el archivo !!!";
+		system("PAUSE");
+	}
+	
+	cout << "\n\n\rId de Usuario : "; 
+	cin >> id;
+	dir = id * sizeof(reg); // Calculo de la dir. fisica
+	fseek(ptr, dir, SEEK_SET); //Posicionar el apuntador del archivo
+	fread(&reg, sizeof(reg), 1, ptr);
+	// Lee el "Reg", de tamano=sizeof(Reg) del archivo "Nineras"
+	if(reg.id_Usuario != id){
+		cout << "Ingrese Nombre de Usuario : ";
+		cin>>reg.Login;
+		
+		cout << "Ingrese Password : ";
+		cin>>reg.Password;
+		
+		reg.Estado = "S";
+		reg.id_Usuario = id;
+
+		fseek(ptr, dir, SEEK_SET); //Posicionar el apuntador del archivo
+		fwrite(&reg, sizeof(reg), 1, ptr); // Grabar el Registro completo
+		cout << "\n\n\n\rRegistro guardado!";
+		system("PAUSE");
+	} else {
+		cout << "\n\n\n\rEl Id Usuario ya existe !!!";
+		cout << "\n\r<<< Oprima cualquier tecla para continuar >>>";
+		system("PAUSE");
+	}
+	fclose(ptr);
+}
+
+void baja_Usuarios(){
+	int id; // Variable local para el numero de cliente que desea eliminar
+	long dir;
+	char op;
+
+	FILE *ptr;
+	Usuario reg;
+	
+	cout << "\n\rBAJA LOGICA DE REGISTRO DE USUARIOS";
+	ptr = fopen("Usuarios.dat","rb");
+	// en modo de lectura/escritura
+	if (ptr == NULL)  // Valida la existencia del archivo
+	{
+		cout << "\n\n\n\rNo existe el archivo !!!"<<endl;
+		system("PAUSE");
+	}
+
+	cout << "\n\n\n\rId de Ninera: "; 
+	cin >> id;
+
+	dir = id * sizeof(reg); // Calculo de la dir. fisica
+	fseek(ptr, dir, SEEK_SET); //Posicionar el apuntador del archivo
+	fread(&reg, sizeof(reg), 1, ptr);
+	// Lee el "Registro", de tamano=sizeof(Registro) del archivo "alias"
+	if (reg.id_Usuario == id)
+	{
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<"--------        Baja Logica de Usuarios              --------"<<endl;
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<<endl;
+		cout<<"Codigo \t"<<"Nombre de Usuario \t"<<"Password \t"<<"Estado"<<endl;
+		cout<<"-------------------------------------------------------------"<<endl;
+		cout<< reg.id_Usuario <<"\t"<< reg.Login <<"\t"<< reg.Password <<"\t"<< reg.Estado;
+		do
+		{
+			cout << "\n\rEsta seguro que desea eliminar este registro? [S/N] ---> ";
+			op = toupper(_getche());
+		} while (op != 'S' && op != 'N');
+		if (op == 'S')
+		{
+			reg.Estado = "N";
+			fseek(ptr, dir, SEEK_SET); //Posicionar el apuntador del archivo
+			fwrite(&reg, sizeof(reg), 1, ptr);  // Graba el registro con los nuevos campos
+			cout << "\n\n\n\rRegistro eliminado logicamente !!!"<<endl;
+			system("PAUSE");
+		}
+		else
+		{
+			cout << "\n\n\n\rRegistro NO eliminado !!!";
+			system("PAUSE");
+		}		
+	}
+	fclose(ptr);   // Cierra el archivo
+}
+
+void modificacion_Usuarios(){
+	FILE *ptr;
+	Usuario reg;
+	int id, pos;
+	cout << "Ingrese el id de Usuario que desea modificar: ";
+	cin >> id;
+	ptr = fopen("Usuarios.dat","rb+");
+	if(ptr != NULL)
+	{
+		fread(&reg,sizeof(reg),1,ptr);
+		while(!feof(ptr))
+		{
+			if(reg.id_Usuario == id)
+			{
+				reg.id_Usuario = id;
+				cout << "Ingrese el nombre de usuario : ";
+				cin >> reg.Login;
+				cout << endl << "Ingrese contraseña : "<< endl ;
+				cin >> reg.Password;
+				reg.Estado = "S";
+				fseek(ptr,ftell(ptr)-sizeof(reg),SEEK_SET);
+				fwrite(&reg,sizeof(reg),1,ptr);
+				cout<<"Registro modificado..."<<endl;
+				system("PAUSE");
+			}
+			fread(&reg,sizeof(reg),1,ptr);
+		}
+	}
+	fclose(ptr);
+}
+
+void consulta_Usuarios(){
+	FILE *ptr;
+	Usuario reg;
+	ptr = fopen("Usuarios.dat","rb");
+	if(ptr == NULL){
+		cout << "\n\n\n\rNo existe el archivo !!!"<<endl;
+		system("PAUSE");
+	}
+	cout<<"-------------------------------------------------------------"<<endl;
+	cout<<"--------         Consulta de Usuarios                --------"<<endl;
+	cout<<"-------------------------------------------------------------"<<endl;
+	cout<<endl;
+	fread(&reg, sizeof(reg), 1, ptr);
+	while (!feof(ptr)) 
+	{
+		if((reg.Estado == "S") && (reg.Estado != "")){
+			cout<<"Codigo \t"<<"Usuario \t"<<"Estado "<<endl;
+			cout<<"-------------------------------------------------------------"<<endl;
+			cout<<reg.id_Usuario<<"\t"<< reg.Login <<"\t"<<reg.Estado<<"\t"<<endl;
+		}
+		fread(&reg, sizeof(reg), 1, ptr);	
+	}
+	cout<<"-------------------------------------------------------------"<<endl;
+	fclose(ptr);
+	cout << "\n\rFin del listado !!!"<<endl;
+	system("PAUSE");
+}
+
+void reporte_Empleos(){
+	FILE *ptr;
+	BolsaEmpleo reg;
+	ptr = fopen("Empleos.dat","rb");
+	if(ptr == NULL){
+		cout << "\n\n\n\rNo existe el archivo !!!"<<endl;
+		system("PAUSE");
+	}
+	cout<<"-------------------------------------------------------------"<<endl;
+	cout<<"--------      Reporte de Empleos Publicados          --------"<<endl;
+	cout<<"-------------------------------------------------------------"<<endl;
+	cout<<endl;
+	cout<<"Codigo \t"<<"Cod Cliente \t"<<"Titulo \t"<<"Requisitos "<<endl;
+	cout<<"-------------------------------------------------------------"<<endl;
+	fread(&reg, sizeof(reg), 1, ptr);
+	while (!feof(ptr)) 
+	{
+		if((reg.Estado == "S") && (reg.Estado != "")){
+			cout<< reg.Id_Bolsa <<"\t"<< reg.Id_Cliente <<"\t"<< reg.Nombre <<"\t"<< reg.Requisito1 +", "+ reg.Requisito2+", "+reg.Requisito3<<endl;
+		}
+		fread(&reg, sizeof(reg), 1, ptr);	
+	}
+	cout<<"-------------------------------------------------------------"<<endl;
+	fclose(ptr);
+	cout << "\n\rFin del listado !!!"<<endl;
+	system("PAUSE");
+}
+
+void reporte_Guarderias(){
+	FILE *ptr;
+	Guarderia reg;
+	ptr = fopen("Guarderias.dat","rb");
+	if(ptr == NULL){
+		cout << "\n\n\n\rNo existe el archivo !!!"<<endl;
+		system("PAUSE");
+	}
+	cout<<"-------------------------------------------------------------"<<endl;
+	cout<<"--------         Consulta de Empleos                 --------"<<endl;
+	cout<<"-------------------------------------------------------------"<<endl;
+	cout<<endl;
+	cout<<"Codigo \t"<<"Nombre \t"<<"Direccion \t"<<"Telefono "<<endl;
+	cout<<"-------------------------------------------------------------"<<endl;
+	fread(&reg, sizeof(reg), 1, ptr);
+	while (!feof(ptr)) 
+	{
+		if((reg.Estado == "S") && (reg.Estado != "")){
+			cout<< reg.id_Guarderia <<"\t"<< reg.Nombre <<"\t"<< reg.Direccion <<"\t"<< reg.Telefono <<endl;
+		}
+		fread(&reg, sizeof(reg), 1, ptr);	
+	}
+	cout<<"-------------------------------------------------------------"<<endl;
+	fclose(ptr);
+	cout << "\n\rFin del listado !!!"<<endl;
+	system("PAUSE");
+}
+
